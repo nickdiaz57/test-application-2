@@ -13,7 +13,7 @@ class DogRepository @Inject constructor(private val dogService: DogService) {
         emit(Resource.Loading)
         Log.e("Repo", "get all dogs called")
         val resource = try {
-            Log.e("Repo", "here")
+            Log.e("Repo", "try block")
             val response = dogService.getAllDogs().body()
             Resource.Success(response)
         } catch (ex: Exception) {
