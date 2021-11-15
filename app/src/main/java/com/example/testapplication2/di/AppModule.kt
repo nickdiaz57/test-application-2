@@ -1,8 +1,6 @@
 package com.example.testapplication2.di
 
-import com.example.testapplication2.repo.DogRepository
 import com.example.testapplication2.repo.DogService
-import com.example.testapplication2.repo.MockDogService
 import com.example.testapplication2.utils.BASE_URL
 import com.squareup.moshi.Moshi
 import dagger.Module
@@ -11,7 +9,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.create
 import javax.inject.Singleton
 
 @Module

@@ -1,6 +1,6 @@
 package com.example.testapplication2.repo
 
-import com.example.testapplication2.testmodels.BreedResponse
+import com.example.testapplication2.models.BreedResponse
 import retrofit2.Response
 import retrofit2.http.GET
 

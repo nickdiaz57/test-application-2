@@ -4,52 +4,41 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testapplication2.databinding.ItemDogBinding
-import com.example.testapplication2.testmodels.Dog
+import com.example.testapplication2.models.DogWithBreeds
 
-class DogAdapter (
-    private val dogList: MutableList<Dog> = mutableListOf()
-        ) : RecyclerView.Adapter<DogAdapter.DogViewHolder>() {
+class DogAdapter(
+    private val onClick: (dog: DogWithBreeds) -> Unit,
+) : RecyclerView.Adapter<DogAdapter.DogViewHolder>() {
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup, viewType: Int
-    ) = DogViewHolder.getInstance(parent)
+    private val dogsList = mutableListOf<DogWithBreeds>()
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DogViewHolder {
+        return DogViewHolder(ItemDogBinding.inflate(LayoutInflater.from(parent.context),
+            parent,
+            false)).also { dogViewHolder ->
+            dogViewHolder.itemView.setOnClickListener {
+                onClick.invoke(dogsList[dogViewHolder.adapterPosition])
+            }
+        }
+    }
 
     override fun onBindViewHolder(holder: DogViewHolder, position: Int) {
-        holder.loadDog(dogList[position])
+        holder.bind(dogsList[position])
     }
 
-    override fun getItemCount() = dogList.size
+    override fun getItemCount() = dogsList.size
 
-    fun updateList(dogs: List<Dog>) {
-        if (dogs.lastOrNull() != dogList.lastOrNull()) {
-            val positionStart = dogList.size
-            dogList.addAll(dogs)
-            notifyItemRangeInserted(positionStart, dogs.size)
-        }
-    }
-
-    fun clear() {
-        val listSize = dogList.size
-        dogList.clear()
-        notifyItemRangeRemoved(0, listSize)
+    fun submitList(dogs: List<DogWithBreeds>) {
+        dogsList.clear()
+        dogsList.addAll(dogs)
+        notifyDataSetChanged()
     }
 
 
-    class DogViewHolder(
-        private val binding: ItemDogBinding
-    ) : RecyclerView.ViewHolder(binding.root) {
-
-        fun loadDog(dog: Dog) = with(binding) {
-            tvName.text = dog.name
-        }
-
-        companion object {
-            fun getInstance(parent: ViewGroup): DogViewHolder {
-                val binding = ItemDogBinding.inflate(
-                    LayoutInflater.from(parent.context), parent, false
-                )
-                return DogViewHolder(binding)
-            }
+    class DogViewHolder(private val binding: ItemDogBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(dog: DogWithBreeds) = with(binding) {
+            this.tvName.text = dog.dogName
         }
     }
 }
